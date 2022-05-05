@@ -1,0 +1,43 @@
+{
+  "menu": [
+    {
+      "id": "File",
+      "submenu": [
+        {
+          "id": "About",
+          "command": "application:about",
+          "command-before": "application:show?page=index"
+        },
+        {
+          "id": "Open Links",
+          "command": "application:open-links"          
+        },
+        { "type": "separator" },
+        { "id": "Preferences", "command": "application:preferences" },
+        { "type": "separator" },
+        { "id": "Quit", "role": "quit" }
+      ]
+    },    
+    {
+      "role": "window",
+      "id": "Window",
+      "submenu": [
+        { "id": "Reload", "role": "reload" },
+        { "id": "Close", "role": "close" },
+        { "id": "Minimize", "role": "minimize" },
+        { "id": "Zoom", "role": "zoom" },
+        { "id": "Toggle-Fullscreen", "role": "togglefullscreen" },
+        { "type": "separator" },
+        { "id": "front", "role": "front" }
+      ]
+    },
+    {
+      "role": "help",
+      "id": "Help",
+      "submenu": [
+        { "id": "report-problem", "command": "help:report-problem" }, 
+        { "id": "toggle-dev-tools", "role": "toggledevtools" }
+      ]
+    }
+  ]
+}
