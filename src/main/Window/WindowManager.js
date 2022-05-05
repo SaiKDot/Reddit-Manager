@@ -20,7 +20,7 @@ const defaultBrowserOptions = {
 
 const customAttrs = {
   attrs: {
-    title: 'Motrix',
+    title: 'Reddit Manager',
     width: 1024,
     height: 768,
     minWidth: 400,

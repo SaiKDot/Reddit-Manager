@@ -223,9 +223,7 @@ export default class MainProcess extends EventEmitter {
 
   async stop() {
     try {
-      await this.stopEngine()
-
-      this.trayManager.destroy()
+      await this.stopEngine()      
     } catch (err) {
       logger.warn('App stop error: ', err.message)
     }
