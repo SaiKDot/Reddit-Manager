@@ -4,6 +4,8 @@ import is from 'electron-is'
 import { readFile, unlink } from 'fs'
 import { extname, basename } from 'path'
 import { isEmpty } from 'lodash'
+import fs from 'fs'
+import csv from 'csv-parser'
 
 import {
   APP_RUN_MODE, 
@@ -340,11 +342,41 @@ export default class MainProcess extends EventEmitter {
     }
   }
 
+  readCsv(path) {
+      let savedData = []
+      return new Promise((resolve, reject) => {
+        fs.createReadStream(path)
+          .pipe(csv())
+          .on('data', function (data) {
+            try {
+              savedData.push(data)
+            } catch (err) {
+              console.log(err)
+              reject(err)
+            }
+          })
+          .on('end', function () {
+            
+            resolve(savedData)
+          })
+      })       
+  }
+  
   async openLinkFile() {
     var open = await  dialog.showOpenDialog({
         properties: ['openFile'],
         filters: [{ name: 'CSV', extensions: ['csv'] }]})
-    console.log(open.filePaths)
+    console.log(open.filePaths[0])
+    const fileString =  await this.readCsv(open.filePaths[0])
+    const links = fileString.map(({ permalink }) => {
+      
+      const subreddit =  permalink.split('/')[4] 
+      return {permalink , subreddit }
+      
+    })
+
+    this.sendMessageToAll('main:recievedLinks', links)
+     
   }
 
   handleCommands() {

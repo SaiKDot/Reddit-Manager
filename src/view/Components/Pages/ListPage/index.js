@@ -2,49 +2,24 @@ import React, { useEffect, useRef, useState, useCallback,useLayoutEffect } from 
 import Draggable from 'react-draggable'
 import _ from 'underscore'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import styled from 'styled-components'
-import moment from 'moment'
+import styled from 'styled-components'  
 import ListBody from './ListBody' 
 import Header from '../../Header'
-import NewTaskModal from '../../Modal/NewTaskModal' 
-import { fetchTaskList } from '../../../Actions/task' 
+ 
+import { fetchTaskList } from '../../../actions/task' 
 
-import Dropper from './Dropper'
+ 
 
 const ListPage = (props) => {
   const dispatch = useDispatch()  
   const containerRef = useRef(null) 
-
-  // useEffect(() => {
-     
-  //  const interval = setInterval(() => {
-
-  //     polling('This will run every second!');
-      
-  //  }, 1000);
-
-  //  return () => clearInterval(interval);
-  // }, []);
-
-  // useEffect(() => {
-  //   setWidth(sidePanel_width)
-     
-  // }, [sidePanel_width])
-
-  // const polling = () => {
-      
-  //   dispatch(fetchTaskList())
-  // }
-  // const fetchICons = async() => {     
-
-  //    getIcons(function(data){
-  //       console.log({data}); 
-  //     });
-     
-  // }
+  const links = useSelector((state) => state.app.saved_list_import)
+  useEffect(() => {
+    console.log(links)
+  },[links])
   return (
     <Container>
-      <NewTaskModal />
+      
       <Header />
 
       <ListContainer ref={containerRef}>

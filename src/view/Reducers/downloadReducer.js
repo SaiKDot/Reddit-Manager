@@ -1,4 +1,4 @@
-import * as consts from '../Actions/types'
+import * as consts from '../actions/types'
 
 const initial_state = {
   download_list: []

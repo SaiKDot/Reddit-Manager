@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import ProgressBar from './ProgressBar'
 import * as moment from 'moment'
 import listArr from '../../../list.json'
-import { changeHeaderIcon } from '../../../Actions'
+import { changeHeaderIcon } from '../../../actions'
 
 
 

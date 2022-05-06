@@ -699,3 +699,12 @@ export const isValidURL = (string) => {
 
 export const changedConfig = { basic: {}, advanced: {} }
 export const backupConfig = { theme: undefined, locale: undefined }
+
+export const groupBy = (items, key) =>
+  items.reduce(
+    (result, item) => ({
+      ...result,
+      [item[key]]: [...(result[item[key]] || []), item],
+    }),
+    {}
+  )

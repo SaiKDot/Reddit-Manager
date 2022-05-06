@@ -1,34 +1,14 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import Icon from './Icon'
-import $ from 'jquery'
-import AppButton from '../Styled/AppButton'
+import Icon from './Icon'  
 
-import {toggleTaskModal} from '../../Actions'
-const areEqual = (prevProps, nextProps) => true
-
-
+ 
 const Header = (props) => {
   //  const dispatch = useDispatch()
-    
-   const AddButtonRef = useRef()
-   const ResumeButtonRef = useRef() 
-   const StopButtonRef = useRef()
-   const CancelButtonRef = useRef()
-   const DeleteButtonRef = useRef()
-   const DeleteAllRef = useRef()
-   const underlineRef = useRef()
-
-   const handleClick = (id) => {
+  const handleClick = (id) => {
       console.log(id)
-   }
-  
-  //  const getButtons = () => {
-  //    return headerButtons.map((item) => {
-  //      return <HeaderIcon item={item} key={item.id} />
-  //    })
-  //  }
+   }  
  
   function clickHandle(e) {
       var node = e.currentTarget      
@@ -40,13 +20,7 @@ const Header = (props) => {
   }
   return (
     <Head>
-      <AddTask disabled={false} onMouseOver={(e) => clickHandle(e)}/>
-      <ResumeButton disabled={false} onMouseOver={(e) => clickHandle(e)} />
-      <StopButton disabled={false}  onMouseOver={(e) => clickHandle(e)} />
-      <CancelButton disabled={false} onMouseOver={(e) => clickHandle(e)} />
-      <DeleteButton disabled={false} onMouseOver={(e) => clickHandle(e)} />
-      <DeleteAll disabled={false} onMouseOver={(e) => clickHandle(e)} />
-      <MenuUnderline ref={underlineRef} />
+     
     </Head>
   )
 }
