@@ -6,6 +6,7 @@ import 'normalize.css'
 
 import ListPage from './Pages/ListPage'
 import BatchPage from './Pages/BatchPage'
+import CardsPage from './Pages/CardsPage'
 
 import '../Styles/custom.css'
 import '../Styles/simple-line-icons.min.css'
@@ -18,6 +19,7 @@ const App = props => {
   // },[])
   return (
     <Router>
+      <Route path="/" exact component={CardsPage} />
       <Route path="/" exact component={ListPage} />
       <Route path="/batch" exact component={BatchPage} />
     </Router>
