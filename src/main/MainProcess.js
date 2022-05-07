@@ -6,7 +6,7 @@ import { extname, basename } from 'path'
 import { isEmpty } from 'lodash'
 import fs from 'fs'
 import csv from 'csv-parser'
-
+import Store from 'electron-store'
 import {
   APP_RUN_MODE, 
   AUTO_CHECK_UPDATE_INTERVAL,
@@ -48,6 +48,8 @@ export default class MainProcess extends EventEmitter {
     this.handleIpcInvokes()
 
     this.emit('application:initialized')
+
+    this.saveFiles = new Store({})
   }
 
   initConfigManager() {
@@ -225,7 +227,7 @@ export default class MainProcess extends EventEmitter {
 
   async stop() {
     try {
-      await this.stopEngine()      
+      await this.stopEngine()
     } catch (err) {
       logger.warn('App stop error: ', err.message)
     }
@@ -343,44 +345,49 @@ export default class MainProcess extends EventEmitter {
   }
 
   readCsv(path) {
-      let savedData = []
-      return new Promise((resolve, reject) => {
-        fs.createReadStream(path)
-          .pipe(csv())
-          .on('data', function (data) {
-            try {
-              savedData.push(data)
-            } catch (err) {
-              console.log(err)
-              reject(err)
-            }
-          })
-          .on('end', function () {
-            
-            resolve(savedData)
-          })
-      })       
+    let savedData = []
+    return new Promise((resolve, reject) => {
+      fs.createReadStream(path)
+        .pipe(csv())
+        .on('data', function (data) {
+          try {
+            savedData.push(data)
+          } catch (err) {
+            console.log(err)
+            reject(err)
+          }
+        })
+        .on('end', function () {
+          resolve(savedData)
+        })
+    })
   }
-  
-  async openLinkFile() {
-    var open = await  dialog.showOpenDialog({
-        properties: ['openFile'],
-        filters: [{ name: 'CSV', extensions: ['csv'] }]})
-    console.log(open.filePaths[0])
-    const fileString =  await this.readCsv(open.filePaths[0])
-    const links = fileString.map(({ permalink }) => {
-      
-      const subreddit =  permalink.split('/')[4] 
-      return {permalink , subreddit }
-      
+
+  async openPostsFile() {
+    var open = await dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [{ name: 'CSV', extensions: ['csv'] }],
     })
 
-    this.sendMessageToAll('main:recievedLinks', links)
-     
+    if (open.canceled === true) return
+
+    const fileString = await this.readCsv(open.filePaths[0])
+    const posts = fileString.map(({ permalink }) => {
+      const subreddit = permalink.split('/')[4]
+      return { permalink, subreddit }
+    })
+    this.saveFiles.set('savedPosts', posts)
+    this.sendMessageToAll('main:recievedPosts', posts)
+  }
+
+  async retrieveSavedPosts() {
+   console.log( this.saveFiles.get('savedPosts'))
   }
 
   handleCommands() {
-    this.on('application:open-links', this.openLinkFile)
+    this.on('application:openPostsFile', this.openPostsFile)
+
+    this.on('application:openSavedLinks', this.retrieveSavedPosts)
 
     this.on('application:save-preference', this.savePreference)
 

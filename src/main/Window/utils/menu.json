@@ -10,7 +10,11 @@
         },
         {
           "id": "Open Links",
-          "command": "application:open-links"          
+          "command": "application:openPostsFile"
+        },
+        {
+          "id": "Get Save Links",
+          "command": "application:openSavedLinks"
         },
         { "type": "separator" },
         { "id": "Preferences", "command": "application:preferences" },
