@@ -13,13 +13,9 @@ import { fetchTaskList } from '../../../actions/task'
 const ListPage = (props) => {
   const dispatch = useDispatch()  
   const containerRef = useRef(null) 
-  const links = useSelector((state) => state.app.saved_list_import)
-  useEffect(() => {
-    console.log(links)
-  },[links])
+ 
   return (
-    <Container>
-      
+    <Container>      
       <Header />
 
       <ListContainer ref={containerRef}>

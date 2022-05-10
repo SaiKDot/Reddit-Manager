@@ -17,9 +17,9 @@ import ConfigManager from './Controllers/ConfigManager'
 import Engine from './Controllers/Engine'
 import EngineClient from './Controllers/EngineClient'
 import WindowManager from './Window/WindowManager'
-import MenuManager from './Window/MenuManager'
- 
+import MenuManager from './Window/MenuManager' 
 import { getSessionPath } from './utils'
+import { groupBy } from "@shared/utils";
 
 export default class MainProcess extends EventEmitter {
   constructor() {
@@ -376,12 +376,14 @@ export default class MainProcess extends EventEmitter {
       const subreddit = permalink.split('/')[4]
       return { permalink, subreddit }
     })
-    this.saveFiles.set('savedPosts', posts)
-    this.sendMessageToAll('main:recievedPosts', posts)
+    const groupedPosts = groupBy(posts, 'subreddit')
+    this.saveFiles.set('savedPosts', groupedPosts)
+    this.sendMessageToAll('main:recievedPosts', groupedPosts)
   }
 
   async retrieveSavedPosts() {
-   console.log( this.saveFiles.get('savedPosts'))
+   const posts = this.saveFiles.get('savedPosts')
+   this.sendMessageToAll('main:recievedPosts', posts)
   }
 
   handleCommands() {

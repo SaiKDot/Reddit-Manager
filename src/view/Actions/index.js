@@ -1,8 +1,9 @@
 import * as consts from './types'
 import  sizeof from  'object-sizeof'
 
-export const setSavedLinks = (links) => {    
-  return {type: consts.SET_SAVED_LINKS_FROM_FILE, payload : links}
+export const setSavedPosts = (links) => {
+  console.log(links)
+  return { type: consts.SET_SAVED_POSTS, payload: links }
 }
  
 export const clearAdvancedInputs = () => {

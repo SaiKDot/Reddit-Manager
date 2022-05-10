@@ -20,4 +20,4 @@ export const CHANGE_DEFAULT_DIRECTORY = 'change_default_directory'
 export const GET_BULK_LINKS = 'get_bulk_links'
 
 /* app */
-export const SET_SAVED_LINKS_FROM_FILE = 'set_saved_links_from_file'
+export const SET_SAVED_POSTS = 'set_saved_posts'

@@ -6,11 +6,13 @@ import { useSelector, useDispatch } from 'react-redux'
  
 
 const CardsPage  = props => {
-    const links = useSelector((state) => state.app.saved_list_import)
-    useEffect(() => {
-      console.log(links)
 
+    const links = useSelector((state) => state.app.saved_posts)
+
+    useEffect(() => {
+      
     }, [links])
+
   const iterateObject = () => {
     
    const mapped = Object.keys(links).map((el, i) => (
@@ -24,7 +26,7 @@ const CardsPage  = props => {
 
 const Card = ({ subreddit, length=1 }) => {
   return (
-    <CardList>
+    
       <StyleCard>
         <div className="card_image">
           <div> {length}</div>
@@ -33,24 +35,24 @@ const Card = ({ subreddit, length=1 }) => {
           <p>{subreddit}</p>
         </div>
       </StyleCard>
-    </CardList>
+    
   )
 }
 
 const CardList = styled.div`
-  z-index: 0;
-  width: 100%;
+  
+  width: 100vw;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  padding : 20px;
 `
 const StyleCard = styled.div`
   margin: 15px auto;
   width: 150px;
   height: 150px;
   border-radius: 20px;
-  box-shadow: 2px 2px 15px 4px rgba(0, 0, 0, 0.25),
-    -2px -2px 15px 4px rgba(0, 0, 0, 0.22);
+  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.25), -2px -2px 2px 4px rgba(0,0,0,0.22);
   cursor: pointer;
   transition: 0.4s;
   & > .card_image {

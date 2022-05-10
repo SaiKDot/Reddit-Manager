@@ -20,7 +20,7 @@ const App = props => {
   return (
     <Router>
       <Route path="/" exact component={CardsPage} />
-      <Route path="/" exact component={ListPage} />
+      <Route path="/list" exact component={ListPage} />
       <Route path="/batch" exact component={BatchPage} />
     </Router>
   )

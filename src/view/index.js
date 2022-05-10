@@ -7,10 +7,10 @@ import createIpc from 'redux-electron-ipc'
 import reducers from './reducers'
 import thunk from 'redux-thunk'
 import { StylesProvider } from '@mui/styles'
-import {setSavedLinks} from './actions'
+import { setSavedPosts } from './actions'
 
 const ipc = createIpc({
-  'main:recievedLinks': (links, ...args) => setSavedLinks(args[0])
+  'main:recievedPosts': (links, ...args) => setSavedPosts(args[0]),
 })
 
 const store = createStore(reducers, applyMiddleware(thunk, ipc))

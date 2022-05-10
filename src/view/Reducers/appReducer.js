@@ -1,16 +1,16 @@
 import * as consts from '../actions/types'
 import {groupBy} from '@shared/utils'
  const initial_state = {
-   saved_list_import : {}
+   saved_posts: {},
  }
 
 
  export default (state = initial_state, actions ) => {
     switch (actions.type) {
-      case consts.SET_SAVED_LINKS_FROM_FILE:      
+      case consts.SET_SAVED_POSTS:      
        return {
          ...state,
-         saved_list_import: groupBy(actions.payload, 'subreddit'),
+         saved_posts: actions.payload
        }        
        break;
       case consts.DOWNLOAD_TASK_CANCEL: return {

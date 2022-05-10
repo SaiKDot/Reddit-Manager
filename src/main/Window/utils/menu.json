@@ -9,7 +9,7 @@
           "command-before": "application:show?page=index"
         },
         {
-          "id": "Open Links",
+          "id": "Open Links File",
           "command": "application:openPostsFile"
         },
         {
