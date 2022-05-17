@@ -17,6 +17,9 @@ import {groupBy} from '@shared/utils'
         ...state, download_list: []
       }
       break
+      case consts.SORT_CARDS_RANK: return  {
+          ...state, saved_posts: state.saved_posts.sort((a,b) => b.length - a.length)
+      }
       default: return state;
         
     }

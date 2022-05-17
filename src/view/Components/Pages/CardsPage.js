@@ -2,26 +2,44 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'underscore'
 import { useSelector, useDispatch } from 'react-redux'
- 
- 
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import {sortCardsBy} from '../../actions'
 
 const CardsPage  = props => {
 
-    const links = useSelector((state) => state.app.saved_posts)
-
+    const posts = useSelector((state) => state.app.saved_posts)
+    const dispatch = useDispatch()
     useEffect(() => {
-      
-    }, [links])
+      console.log(posts)
+    }, [posts])
 
   const iterateObject = () => {
     
-   const mapped = Object.keys(links).map((el, i) => (
+   const mapped = Object.keys(posts).map((el, i) => (
      <Card subreddit={el} key={i} length={el.length}></Card>
    ))
    return mapped
   }
+  const sortClick = (e, sort) => {
+    e.preventDefault()
+    dispatch(sortCardsBy(sort))
+  }
 
-  return <CardList>{iterateObject()}</CardList>
+  return (
+    <>
+  <nav id="sort-nav">
+    <ul>
+      <li><a href="#" onClick={(e) => sortClick(e, 'rank')}>Sort by Posts</a></li>
+      <li><a href="#"onClick={(e) => sortClick(e, 'alpha')}>Alphabetic</a></li>
+      {/* <li><a href="#">Menu 2</a></li> */}
+    </ul>
+  </nav>
+  <CardList> {iterateObject()} </CardList>
+  </>
+  )
 }
 
 const Card = ({ subreddit, length=1 }) => {
@@ -52,7 +70,8 @@ const StyleCard = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 20px;
-  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.25), -2px -2px 2px 4px rgba(0,0,0,0.22);
+  box-shadow:  2px 2px 2px 2px rgba(0,0,0,0.25), 
+  -2px -2px 2px 2px rgba(0,0,0,0.22);
   cursor: pointer;
   transition: 0.4s;
   & > .card_image {
@@ -86,8 +105,8 @@ const StyleCard = styled.div`
   }
   &:hover {
     transform: scale(0.9, 0.9);
-    box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25),
-      -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
+    box-shadow: 2px 2px 15px 2px rgba(0, 0, 0, 0.25),
+      -5px -5px 15px 10px rgba(0, 0, 0, 0.22);
   }
 `
 

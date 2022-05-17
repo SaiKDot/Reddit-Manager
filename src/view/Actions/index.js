@@ -1,9 +1,14 @@
 import * as consts from './types'
 import  sizeof from  'object-sizeof'
 
-export const setSavedPosts = (links) => {
-  console.log(links)
+export const setSavedPosts = (links) => {  
   return { type: consts.SET_SAVED_POSTS, payload: links }
+}
+
+export const sortCardsBy = (input)=> {
+  const sort =
+    input == 'alpha' ? consts.SORT_CARDS_ALPHA : consts.SORT_CARDS_RANK
+    return {type: sort}
 }
  
 export const clearAdvancedInputs = () => {

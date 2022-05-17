@@ -21,3 +21,5 @@ export const GET_BULK_LINKS = 'get_bulk_links'
 
 /* app */
 export const SET_SAVED_POSTS = 'set_saved_posts'
+export const SORT_CARDS_RANK = 'sort_cards_rank'
+export const SORT_CARDS_ALPHA = 'SORT_CARDS_ALPHA'

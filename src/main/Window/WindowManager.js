@@ -28,7 +28,7 @@ const customAttrs = {
     // backgroundColor: '#FFFFFF',
     transparent: !is.windows(),
   },
-  bindCloseToHide: true,
+  bindCloseToHide: false,
   url: is.dev() ? 'http://localhost:3002' : `file://${__dirname}/index.html`,
 }
 
