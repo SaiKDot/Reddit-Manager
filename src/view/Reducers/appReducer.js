@@ -11,12 +11,10 @@ import {groupBy} from '@shared/utils'
 }
 
 function reduceAndSort(array) {
-  const reducedArr = dataArr
-    .reduce(groupAndCollectBySameKeyValue, {
-      key: 'subreddit',
-      result: {},
-    })
-    .result
+  const reducedArr = array.reduce(groupAndCollectBySameKeyValue, {
+    key: 'subreddit',
+    result: {},
+  }).result
 const mappedObj = Object.entries(  reducedArr ).map(([key, value]) => ({ [key]: value }))
     .sort((a, b) =>
       // ... either by array length ...
