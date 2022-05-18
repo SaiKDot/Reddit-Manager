@@ -17,7 +17,7 @@ function reduceAndSort(array) {
   }).result
 const mappedObj = Object.entries(  reducedArr ).map(([key, value]) => ({ [key]: value }))
     .sort((a, b) =>
-      // ... either by array length ...
+      // ... either by array length ....
       Object.values(b)[0].length - Object.values(a)[0].length
       // ... or by locale alphanumeric precedence.
       || Object.keys(a)[0].localeCompare(Object.keys(b)[0])
