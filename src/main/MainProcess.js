@@ -373,9 +373,10 @@ export default class MainProcess extends EventEmitter {
     if (open.canceled === true) return
 
     const fileString = await this.readCsv(open.filePaths[0])
-    const posts = fileString.map(({ permalink }) => {
+    const posts = fileString.map(({ permalink, id }) => {
       const subreddit = permalink.split('/')[4]
-      return { permalink, subreddit }
+      const postId = id
+      return { permalink, subreddit, postId }
     })
     // const groupedPosts = groupBy(posts, 'subreddit')
     this.saveFiles.set('savedPosts', posts)
