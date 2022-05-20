@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'underscore'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -12,7 +13,7 @@ const CardsPage  = props => {
 
     const posts = useSelector((state) => state.app.saved_posts)
     const history = useHistory()
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
     useEffect(() => {
       console.log(posts)
     }, [posts])
@@ -21,10 +22,24 @@ const CardsPage  = props => {
     // <Card subreddit={el} key={i} length={el.length}></Card>
     const mapped = Object.keys(posts).map((el, i) =>
       Object.entries(posts[el]).map((val, i) => (
-        <Card subreddit={val[0]} key={i} length={val[1].length}></Card>
+        <Card subreddit={val[0]}
+              key={i} 
+              length={val[1].length} 
+              onClick={() => cardClick(val[0],  val[1]) }>
+
+        </Card>
       ))
     )
    return mapped
+  }
+  const cardClick = (sub,posts) => {   
+    navigate({
+      pathname: '/list',      
+      state: {
+        sub: sub,
+        posts: posts,
+      },
+    })
   }
   const sortClick = (e, sort) => {
     e.preventDefault()
@@ -45,10 +60,10 @@ const CardsPage  = props => {
   )
 }
 
-const Card = ({ subreddit, length=1 }) => {
+const Card = ({ subreddit, length=1 , onClick}) => {
   return (
     
-      <StyleCard>
+      <StyleCard onClick={()=> onClick()}>
         <div className="card_image">
           <div> {length}</div>
         </div>

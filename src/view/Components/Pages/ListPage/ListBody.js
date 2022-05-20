@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'underscore'
 import $ from 'jquery'
@@ -73,4 +72,4 @@ const Body = styled.div`
   width: 100%;
 `
 
-export default withRouter(ListBody)
+export default ListBody
