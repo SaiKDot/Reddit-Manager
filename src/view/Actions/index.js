@@ -6,6 +6,7 @@ export const setSavedPosts = (links) => {
 }
 
 export const sortCardsBy = (input)=> {
+   
   const sort =
     input == 'alpha' ? consts.SORT_CARDS_ALPHA : consts.SORT_CARDS_RANK
     return {type: sort}
