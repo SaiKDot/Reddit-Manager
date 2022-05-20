@@ -68,15 +68,22 @@ const CardList = styled.div`
 const StyleCard = styled.div`
   margin: 15px auto;
   width: 150px;
-  height: 150px;
+  height: auto;
+  flex: 0 1 auto;
   border-radius: 20px;
-  box-shadow:  2px 2px 2px 2px rgba(0,0,0,0.25), 
-  -2px -2px 2px 2px rgba(0,0,0,0.22);
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25),
+    -2px -2px 2px 2px rgba(0, 0, 0, 0.22);
   cursor: pointer;
   transition: 0.4s;
+  &::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+    float: left;
+  }
   & > .card_image {
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
     border-radius: 15px;
     display: flex;
     align-items: center;
