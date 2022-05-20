@@ -11,7 +11,7 @@ import {groupBy} from '@shared/utils'
   return { key, result };
 }
 
-function reduceAndSort(array,param) {
+function reduceAndSort(array,param) {   
   const reducedArr = array.reduce(groupAndCollectBySameKeyValue, {
     key: 'subreddit',
     result: {},

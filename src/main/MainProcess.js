@@ -154,6 +154,7 @@ export default class MainProcess extends EventEmitter {
     })
 
     this.windowManager.on('window-closed', (data) => {
+      logger.info('window-closed')
       this.storeWindowState(data)
       this.handleWindowClosed(data)
     })
@@ -376,9 +377,9 @@ export default class MainProcess extends EventEmitter {
       const subreddit = permalink.split('/')[4]
       return { permalink, subreddit }
     })
-    const groupedPosts = groupBy(posts, 'subreddit')
-    this.saveFiles.set('savedPosts', groupedPosts)
-    this.sendMessageToAll('main:recievedPosts', groupedPosts)
+    // const groupedPosts = groupBy(posts, 'subreddit')
+    this.saveFiles.set('savedPosts', posts)
+    this.sendMessageToAll('main:recievedPosts', posts)
   }
 
   async retrieveSavedPosts() {
