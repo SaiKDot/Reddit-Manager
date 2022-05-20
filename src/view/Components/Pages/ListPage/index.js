@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback,useLayoutEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Draggable from 'react-draggable'
 import _ from 'underscore'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
@@ -12,8 +13,12 @@ import { fetchTaskList } from '../../../actions/task'
 
 const ListPage = (props) => {
   const dispatch = useDispatch()  
-  const containerRef = useRef(null) 
- 
+  const containerRef = useRef(null)
+  const location = useLocation()
+  useEffect(() =>  {
+    console.log(location)
+
+  },[])
   return (
     <Container>      
       <Header />

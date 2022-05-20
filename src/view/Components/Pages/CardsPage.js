@@ -3,10 +3,6 @@ import styled from 'styled-components'
 import _ from 'underscore'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
 import {sortCardsBy} from '../../actions'
 
 const CardsPage  = props => {
@@ -17,8 +13,7 @@ const CardsPage  = props => {
       console.log(posts)
     }, [posts])
 
-  const iterateObject = () => {
-    // <Card subreddit={el} key={i} length={el.length}></Card>
+  const iterateObject = () => { 
     const mapped = Object.keys(posts).map((el, i) =>
       Object.entries(posts[el]).map((val, i) => (
         <Card subreddit={val[0]}
@@ -32,13 +27,8 @@ const CardsPage  = props => {
    return mapped
   }
   const cardClick = (sub,posts) => {   
-    navigate({
-      pathname: '/list',      
-      state: {
-        sub: sub,
-        posts: posts,
-      },
-    })
+    navigate('/list', { state: { sub: sub, post: posts } })
+
   }
   const sortClick = (e, sort) => {
     e.preventDefault()

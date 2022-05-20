@@ -21,8 +21,8 @@ const App = props => {
     <Router>
       <Routes>
           <Route path="/" element={<CardsPage/>} />
-          {/* <Route path="/list"  element={ListPage} />
-          <Route path="/batch" element={BatchPage} />         */}
+          <Route path="/list"  element={<ListPage/>} />
+          <Route path="/batch" element={BatchPage} />        
       </Routes>
     </Router>
   )
