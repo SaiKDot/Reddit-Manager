@@ -15,15 +15,24 @@ const ListPage = (props) => {
   const dispatch = useDispatch()  
   const containerRef = useRef(null)
   const location = useLocation()
+  const {posts, sub} = location.state
+  async function fetchPosts() {
+    Promise.all(posts.map(u=>fetch(u.permalink))).then(responses =>
+      Promise.all(responses.map(res => res.json()))
+    ).then(res => {
+        console.log(res)
+    })
+  }
   useEffect(() =>  {
-    console.log(location)
+    console.log(posts)
+    fetchPosts()
 
   },[])
   return (
     <Container>      
       <Header />
 
-      <ListContainer ref={containerRef}>
+        <ListContainer ref={containerRef}>
        
       </ListContainer>
     </Container>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 // import { HashRouter, Route } from 'react-router-dom'
-import { BrowserRouter as Router, Routes,Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
 import 'normalize.css'
 

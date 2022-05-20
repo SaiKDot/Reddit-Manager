@@ -8,6 +8,7 @@ import {sortCardsBy} from '../../actions'
 const CardsPage  = props => {
 
     const posts = useSelector((state) => state.app.saved_posts) 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     useEffect(() => {
       console.log(posts)
@@ -27,7 +28,7 @@ const CardsPage  = props => {
    return mapped
   }
   const cardClick = (sub,posts) => {   
-    navigate('/list', { state: { sub: sub, post: posts } })
+    navigate('/list', { state: { sub: sub, posts: posts } })
 
   }
   const sortClick = (e, sort) => {
