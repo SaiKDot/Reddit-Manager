@@ -11,8 +11,7 @@ import {sortCardsBy} from '../../actions'
 
 const CardsPage  = props => {
 
-    const posts = useSelector((state) => state.app.saved_posts)
-    const history = useHistory()
+    const posts = useSelector((state) => state.app.saved_posts) 
     const navigate = useNavigate()
     useEffect(() => {
       console.log(posts)

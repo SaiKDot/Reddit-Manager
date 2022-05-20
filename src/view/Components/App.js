@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 // import { HashRouter, Route } from 'react-router-dom'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes,Route } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
 import 'normalize.css'
 
@@ -19,9 +19,11 @@ const App = props => {
   // },[])
   return (
     <Router>
-      <Route path="/" exact component={CardsPage} />
-      <Route path="/list" exact component={ListPage} />
-      <Route path="/batch" exact component={BatchPage} />
+      <Routes>
+          <Route path="/" element={<CardsPage/>} />
+          {/* <Route path="/list"  element={ListPage} />
+          <Route path="/batch" element={BatchPage} />         */}
+      </Routes>
     </Router>
   )
 }
