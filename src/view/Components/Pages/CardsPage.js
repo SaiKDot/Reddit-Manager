@@ -17,10 +17,12 @@ const CardsPage  = props => {
     }, [posts])
 
   const iterateObject = () => {
-    
-   const mapped = Object.keys(posts).map((el, i) => (
-     <Card subreddit={el} key={i} length={el.length}></Card>
-   ))
+    // <Card subreddit={el} key={i} length={el.length}></Card>
+    const mapped = Object.keys(posts).map((el, i) =>
+      Object.entries(posts[el]).map((val, i) => (
+        <Card subreddit={val[0]} key={i} length={val[1].length}></Card>
+      ))
+    )
    return mapped
   }
   const sortClick = (e, sort) => {
