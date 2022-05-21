@@ -11,7 +11,6 @@ import {
   APP_RUN_MODE, 
   AUTO_CHECK_UPDATE_INTERVAL,
 } from '@shared/constants'
-import { checkIsNeedRun } from '@shared/utils' 
 import logger from './Helpers/Logger' 
 import ConfigManager from './Controllers/ConfigManager'
 import Engine from './Controllers/Engine'
@@ -19,7 +18,7 @@ import EngineClient from './Controllers/EngineClient'
 import WindowManager from './Window/WindowManager'
 import MenuManager from './Window/MenuManager' 
 import { getSessionPath } from './utils'
-import { groupBy } from "@shared/utils";
+import 'dotenv/config'
 
 export default class MainProcess extends EventEmitter {
   constructor() {
@@ -29,6 +28,7 @@ export default class MainProcess extends EventEmitter {
   }
 
   init() {
+    console.log(process.env)
     this.configManager = this.initConfigManager()
 
     this.setupApplicationMenu()

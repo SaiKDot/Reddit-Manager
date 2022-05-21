@@ -9,8 +9,8 @@
 
 // Install `electron-debug` with `devtron`
 require('electron-debug')({
-  // devToolsMode: 'right',
-  showDevTools: false
+  devToolsMode: 'right',
+  showDevTools: true
 })
 
  
