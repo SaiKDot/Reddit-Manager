@@ -16,7 +16,8 @@ import ConfigManager from './Controllers/ConfigManager'
 import Engine from './Controllers/Engine'
 import EngineClient from './Controllers/EngineClient'
 import WindowManager from './Window/WindowManager'
-import MenuManager from './Window/MenuManager' 
+import MenuManager from './Window/MenuManager'
+import LinksManager from './Controllers/LinksManager'
 import { getSessionPath } from './utils'
 import 'dotenv/config'
 
@@ -28,7 +29,6 @@ export default class MainProcess extends EventEmitter {
   }
 
   init() {
-    console.log(process.env)
     this.configManager = this.initConfigManager()
 
     this.setupApplicationMenu()
@@ -45,11 +45,15 @@ export default class MainProcess extends EventEmitter {
 
     this.handleIpcMessages()
 
-    this.handleIpcInvokes()
+    this.handleIpcInvokes()   
 
     this.emit('application:initialized')
 
     this.saveFiles = new Store({})
+
+    this.linksManager = this.initLinksManager()
+
+   
   }
 
   initConfigManager() {
@@ -278,31 +282,6 @@ export default class MainProcess extends EventEmitter {
     this.touchBarManager = new TouchBarManager()
   }
 
-  handleFile(filePath) {
-    if (!filePath) {
-      return
-    }
-
-    if (extname(filePath).toLowerCase() !== '.torrent') {
-      return
-    }
-
-    this.show()
-
-    const name = basename(filePath)
-    readFile(filePath, (err, data) => {
-      if (err) {
-        logger.warn(`App read file error: ${filePath}`, err.message)
-        return
-      }
-      const dataURL = Buffer.from(data).toString('base64')
-      this.sendCommandToAll('application:new-bt-task-with-file', {
-        name,
-        dataURL,
-      })
-    })
-  }
-
   async handleWindowClosed() {
     await this.stop()
     app.exit()
@@ -345,6 +324,10 @@ export default class MainProcess extends EventEmitter {
     }
   }
 
+ initLinksManager() {
+  return new LinksManager()
+ }
+
   readCsv(path) {
     let savedData = []
     return new Promise((resolve, reject) => {
@@ -370,7 +353,7 @@ export default class MainProcess extends EventEmitter {
       filters: [{ name: 'CSV', extensions: ['csv'] }],
     })
 
-    if (open.canceled === true) return
+    if (open.canceled === true || open.filePaths.length === 0) return
 
     const fileString = await this.readCsv(open.filePaths[0])
     const posts = fileString.map(({ permalink, id }) => {
@@ -379,13 +362,23 @@ export default class MainProcess extends EventEmitter {
       return { permalink, subreddit, postId }
     })
     // const groupedPosts = groupBy(posts, 'subreddit')
+    
     this.saveFiles.set('savedPosts', posts)
+     
+    
     this.sendMessageToAll('main:recievedPosts', posts)
   }
 
   async retrieveSavedPosts() {
-   const posts = this.saveFiles.get('savedPosts')
-   this.sendMessageToAll('main:recievedPosts', posts)
+    console.log(this.saveFiles)
+    const posts = this.saveFiles.get('savedPosts')
+    this.sendMessageToAll('main:recievedPosts', posts)
+  }
+
+  async handleLinks() {    
+    const linksManager = new LinksManager()
+    const posts = linksManager.getPosts()    
+    this.sendMessageToAll('main:recievedPosts', posts)  
   }
 
   handleCommands() {
@@ -442,9 +435,7 @@ export default class MainProcess extends EventEmitter {
       }
     })
 
-    this.on(
-      'application:change-menu-states',
-      (visibleStates, enabledStates, checkedStates) => {
+    this.on('application:change-menu-states',(visibleStates, enabledStates, checkedStates) => {
         this.menuManager.updateMenuStates(
           visibleStates,
           enabledStates,
@@ -458,30 +449,10 @@ export default class MainProcess extends EventEmitter {
       }
     )
 
-    // this.on('application:open-file', (event) => {
-    //   dialog
-    //     .showOpenDialog({
-    //       properties: ['openFile'],
-    //       filters: [
-    //         {
-    //           name: 'Torrent',
-    //           extensions: ['torrent'],
-    //         },
-    //       ],
-    //     })
-    //     .then(({ canceled, filePaths }) => {
-    //       if (canceled || filePaths.length === 0) {
-    //         return
-    //       }
-
-    //       const [filePath] = filePaths
-    //       this.handleFile(filePath)
-    //     })
-    // })
-
     this.on('application:clear-recent-tasks', () => {
       app.clearRecentDocuments()
     })
+   
   }
 
   openExternal(url) {
@@ -501,8 +472,9 @@ export default class MainProcess extends EventEmitter {
   handleEvents() {
     this.once('application:initialized', () => {
       this.autoResumeTask()
-
+       this.handleLinks()
       this.adjustMenu()
+
     })
 
     this.configManager.userConfig.onDidAnyChange(() =>
@@ -536,19 +508,24 @@ export default class MainProcess extends EventEmitter {
     ipcMain.on('event', (event, eventName, ...args) => {
       logger.log('App ipc receive event', eventName, ...args)
       this.emit(eventName, ...args)
-    })
+    })    
+    
   }
 
   handleIpcInvokes() {
     ipcMain.handle('get-app-config', async () => {
       const systemConfig = this.configManager.getSystemConfig()
       const userConfig = this.configManager.getUserConfig()
-
       const result = {
         ...systemConfig,
         ...userConfig,
       }
       return result
     })
+     ipcMain.handle('renderer:getSavedPosts', async () => {
+       return this.linksManager.getPosts()
+     })
   }
+
+ 
 }

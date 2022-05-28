@@ -1,9 +1,23 @@
 import * as consts from './types'
 import  sizeof from  'object-sizeof'
+// import { ipcMain } from 'electron/main'
+import { ipcRenderer } from 'electron'
+
+ 
+export const getSavedPosts = async(message) => {   
+   const links = await ipcRenderer.invoke('renderer:getSavedPosts')  
+   console.log(links)
+  return  (state, dispatch) => {   
+    dispatch({ type: consts.SET_SAVED_POSTS, payload: links })
+  }
+ 
+}
+
 
 export const setSavedPosts = (links) => {  
   return { type: consts.SET_SAVED_POSTS, payload: links }
 }
+
 
 export const sortCardsBy = (input)=> {
    
