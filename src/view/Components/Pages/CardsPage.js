@@ -38,13 +38,14 @@ const CardsPage  = props => {
 
   return (
     <>
-  <nav id="sort-nav">
+  <Nav>
     <ul>
+      <li><a href="#" onClick={(e) => sortClick(e, 'rank')}>Default</a></li>
       <li><a href="#" onClick={(e) => sortClick(e, 'rank')}>Sort by Posts</a></li>
       <li><a href="#"onClick={(e) => sortClick(e, 'alpha')}>Alphabetic</a></li>
       {/* <li><a href="#">Menu 2</a></li> */}
     </ul>
-  </nav>
+  </Nav>
   <CardList> {iterateObject()} </CardList>
   </>
   )
@@ -65,9 +66,61 @@ const Card = ({ subreddit, length=1 , onClick}) => {
   )
 }
 
+const Nav = styled.div`
+  height: 5%;
+  & ul {
+    list-style: none;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+    & li {
+      position: relative;
+      float: left;
+      margin: 0;
+      padding: 0;
+      &.current {
+        background: #ddd;
+      }
+    }
+    & a {
+      display: block;
+      color: #333;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 32px;
+      padding: 0 15px;
+      font-family: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial,
+        sans-serif;
+      &::before {
+        transform: scaleX(0);
+        transform-origin: bottom right;
+        content: ' ';
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        inset: 0 0 0 0;
+        background: hsl(200 100% 80%);
+        z-index: -1;
+        transition: transform 0.3s ease;
+      }
+      &:hover {
+        &:before {
+          transform: scaleX(1);
+          transform-origin: bottom left;
+        }
+      }
+    }
+  }
+`
 const CardList = styled.div`
   
   width: 100vw;
+  height: 95%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;

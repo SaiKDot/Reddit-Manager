@@ -54,10 +54,13 @@ export default function EngineClient(options = {}) {
    }
 
    this.shutdown = async function (optionsParam = {}) {
+
+     logger.info('Engine Shutting Down')
+     
      const { force = false } = optionsParam
      const { secret } = options
 
-     const method = force ? 'forceShutdown' : 'shutdown'
+     const method = force ? 'forceShutdown' : 'shutdown'     
      const args = compactUndefined([secret])
      return call(method, ...args)
    }

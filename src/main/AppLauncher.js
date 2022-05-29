@@ -128,8 +128,7 @@ export default class Launcher extends EventEmitter {
   }
 
   handleAppWillQuit() {
-    app.on('will-quit', () => {
-      logger.info('App will-quit')
+    app.on('will-quit', () => {      
       if (global.application) {
         global.application.stop()
       }

@@ -283,7 +283,7 @@ export default class MainProcess extends EventEmitter {
   }
 
   async handleWindowClosed() {
-    await this.stop()
+    this.stop()
     app.exit()
   }
 
