@@ -4,13 +4,12 @@ import  sizeof from  'object-sizeof'
 import { ipcRenderer } from 'electron'
 
  
-export const getSavedPosts = async(message) => {   
-   const links = await ipcRenderer.invoke('renderer:getSavedPosts')  
-   console.log(links)
-  return  (state, dispatch) => {   
-    dispatch({ type: consts.SET_SAVED_POSTS, payload: links })
-  }
+export const getSavedPostsFromMain = (message) => {     
  
+      return async (dispatch, getState) => {   
+        const links = await ipcRenderer.invoke('renderer:getSavedPosts') 
+        dispatch({ type: consts.SET_SAVED_POSTS, payload: links })
+      } 
 }
 
 

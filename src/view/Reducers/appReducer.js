@@ -5,35 +5,36 @@ import {groupBy} from '@shared/utils'
    init_posts: {}
  }
 
- function groupAndCollectBySameKeyValue({ key, result }, item) {
-  const groupValue = item[key];
-  (result[groupValue] ??= []).push(item)
-  return { key, result };
-}
+//  function groupAndCollectBySameKeyValue({ key, result }, item) {
+//   const groupValue = item[key];
+//   (result[groupValue] ??= []).push(item)
+//   return { key, result };
+// }
 
-function reduceAndSort(array,param) {   
-  const reducedArr = array.reduce(groupAndCollectBySameKeyValue, {
-    key: 'subreddit',
-    result: {},
-  }).result
-const mappedObj = Object.entries(reducedArr)
-  .map(([key, value]) => ({ [key]: value }))
-  .sort((a, b) =>
-    // ... either by array length ....
-    param == 'rank'
-      ? Object.values(b)[0].length - Object.values(a)[0].length
-      : // ... or by locale alphanumeric precedence.
-        Object.keys(a)[0].localeCompare(Object.keys(b)[0]) ||
-        Object.values(b)[0].length - Object.values(a)[0].length
-  )
-return mappedObj;
-}
- export default (state = initial_state, actions ) => {
+// function reduceAndSort(array,param) {   
+//   const reducedArr = array.reduce(groupAndCollectBySameKeyValue, {
+//     key: 'subreddit',
+//     result: {},
+//   }).result
+// const mappedObj = Object.entries(reducedArr)
+//   .map(([key, value]) => ({ [key]: value }))
+//   .sort((a, b) =>
+//     // ... either by array length ....
+//     param == 'rank'
+//       ? Object.values(b)[0].length - Object.values(a)[0].length
+//       : // ... or by locale alphanumeric precedence.
+//         Object.keys(a)[0].localeCompare(Object.keys(b)[0]) ||
+//         Object.values(b)[0].length - Object.values(a)[0].length
+//   )
+// return mappedObj;
+// }
+ export default (state = initial_state, actions ) => {    
     switch (actions.type) {
+     
       case consts.SET_SAVED_POSTS:
         return {
           ...state,
-          saved_posts: reduceAndSort(actions.payload, 'rank'),
+          saved_posts: actions.payload,
           init_posts: actions.payload,
         }
         break

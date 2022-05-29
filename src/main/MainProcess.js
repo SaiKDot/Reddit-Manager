@@ -374,12 +374,7 @@ export default class MainProcess extends EventEmitter {
     const posts = this.saveFiles.get('savedPosts')
     this.sendMessageToAll('main:recievedPosts', posts)
   }
-
-  async handleLinks() {    
-    const linksManager = new LinksManager()
-    const posts = linksManager.getPosts()    
-    this.sendMessageToAll('main:recievedPosts', posts)  
-  }
+ 
 
   handleCommands() {
     this.on('application:openPostsFile', this.openPostsFile)
@@ -471,8 +466,7 @@ export default class MainProcess extends EventEmitter {
 
   handleEvents() {
     this.once('application:initialized', () => {
-      this.autoResumeTask()
-       this.handleLinks()
+      this.autoResumeTask()      
       this.adjustMenu()
 
     })

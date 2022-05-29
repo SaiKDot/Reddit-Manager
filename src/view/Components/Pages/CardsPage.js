@@ -11,7 +11,7 @@ const CardsPage  = props => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     useEffect(() => {
-      console.log(posts)
+      console.log('p',posts)
     }, [posts])
 
   const iterateObject = () => { 
@@ -40,7 +40,7 @@ const CardsPage  = props => {
     <>
   <Nav>
     <ul>
-      <li><a href="#" onClick={(e) => sortClick(e, 'rank')}>Default</a></li>
+      <li><a href="#" onClick={(e) => sortClick(e, 'default')}>Default</a></li>
       <li><a href="#" onClick={(e) => sortClick(e, 'rank')}>Sort by Posts</a></li>
       <li><a href="#"onClick={(e) => sortClick(e, 'alpha')}>Alphabetic</a></li>
       {/* <li><a href="#">Menu 2</a></li> */}

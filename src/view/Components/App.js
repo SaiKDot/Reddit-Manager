@@ -1,24 +1,22 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-// import { HashRouter, Route } from 'react-router-dom'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
-import { getSavedPosts } from '../actions'
-import 'normalize.css'
-
+import { getSavedPostsFromMain } from '../actions'
 import ListPage from './Pages/ListPage'
 import BatchPage from './Pages/BatchPage'
 import CardsPage from './Pages/CardsPage'
-
+import 'normalize.css'
 import '../Styles/custom.css'
 import '../Styles/simple-line-icons.min.css'
+
 
 
 const App = props => {
   const dispatch = useDispatch()
   useEffect(() => {
     // document.addEventListener('contextmenu', (event) => event.preventDefault())
-    getSavedPosts()
+    dispatch(getSavedPostsFromMain())
 
   },[])
   return (
