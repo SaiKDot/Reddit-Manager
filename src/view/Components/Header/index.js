@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 // import Icon from './Icon'  
 import Back_ from  '../../images/back_arrow.svg'
 
@@ -11,26 +12,22 @@ const Header = (props) => {
       console.log(id)
    }  
  
-  function clickHandle(e) {
- 
-  }
+  const navigate = useNavigate()
   return (
     <Head>
-        <BackButton/>
+        <BackButton clickHandler={() => navigate('/')}/>
     </Head>
   )
 }
 
-const BackButton = ({disabled =  false, img}) => {
- return (
-   <IconContainer
-    right = {true}
-   >
-     <IconContent>
-       <Back_ />
-     </IconContent>
-   </IconContainer>
- )
+const BackButton = ({ disabled = false, img, clickHandler }) => {
+  return (
+    <IconContainer right={true} onClick={clickHandler}>
+      <IconContent>
+        <Back_ />
+      </IconContent>
+    </IconContainer>
+  )
 }
 const StyledIcon = ({img}) => {
   

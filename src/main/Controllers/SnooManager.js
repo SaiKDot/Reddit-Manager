@@ -17,7 +17,8 @@ export default class MainProcess extends EventEmitter {
       refreshToken: process.env.REDDIT_RFS_TOKEN,
     })
   }
-  retrieveSubmissions(sub) {
+  retrieveSubmissions(posts) {
+    console.log({posts})
     Promise.all(
       posts.map(async (post) => {
         // const submission = snoo.getSubmission('4j8p6d')

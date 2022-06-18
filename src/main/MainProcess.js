@@ -502,8 +502,10 @@ export default class MainProcess extends EventEmitter {
       return this.linksManager.sortBy(sortType)
     })
     ipcMain.handle('renderer:getPostsBySub', async (event,sub) => {          
-      this.linksManager.getLinksBySub(sub)
-      return this.snooManager.retrieveSubmissions(sub)
+      const postsBySub = this.linksManager.getLinksBySub(sub)
+      logger.info(postsBySub)
+        this.snooManager.retrieveSubmissions(posts)
+      return {}
     })
   }
 }

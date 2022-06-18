@@ -71,8 +71,16 @@ export default class LinksManager extends EventEmitter {
   }
 
   getLinksBySub(sub) {
-    const links = this.saveFiles.get('savedLinks')
-    logger.info(links[sub])
+    const posts = this.getAllLinks().splice(0,4)
+    
+    return posts.reduce((obj, first) => {       
+        Object.entries(first).forEach((val) => {
+          if(sub == val[0]) {  
+            obj = {[val[0]] : val[1]}
+          }        
+        })    
+        return obj    
+      }, {})
   }
 
   getAllLinks() {

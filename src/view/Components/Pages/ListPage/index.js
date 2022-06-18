@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Draggable from 'react-draggable'
 import _ from 'underscore'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import styled from 'styled-components'  
+import styled from 'styled-components' 
 import ListBody from './ListBody' 
 import Header from '../../Header' 
  
