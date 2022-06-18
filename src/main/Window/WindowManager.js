@@ -54,7 +54,7 @@ export default class WindowManager extends EventEmitter {
     const result = customAttrs || {}
     const hideAppMenu = this.userConfig['hide-app-menu']
     if (hideAppMenu) {
-      result.attrs.frame = false
+      result.attrs.frame = true
     }
 
     // Optimized for small screen users

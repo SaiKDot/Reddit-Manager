@@ -5,26 +5,22 @@ import _ from 'underscore'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import styled from 'styled-components'  
 import ListBody from './ListBody' 
-import Header from '../../Header'
+import Header from '../../Header' 
  
-import { fetchTaskList } from '../../../actions/task' 
-
+import {getPostsBySub} from '../../../actions'
  
 
 const ListPage = (props) => {
+
   const dispatch = useDispatch()  
   const containerRef = useRef(null)
   const location = useLocation()
   const {posts, sub} = location.state
-  async function fetchPosts() {
-    Promise.all(posts.map(u=>fetch(u.permalink))).then(responses =>
-      Promise.all(responses.map(res => res.json()))
-    ).then(res => {
-        console.log(res)
-    })
+  function fetchPosts() {
+   dispatch(getPostsBySub(sub))
   }
   useEffect(() =>  {
-    console.log(posts)
+    
     fetchPosts()
 
   },[])

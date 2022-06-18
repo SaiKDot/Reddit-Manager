@@ -1,10 +1,12 @@
+import { EventEmitter } from 'events'
 import snoowrap from 'Snoowrap'
 import * as Promise from 'bluebird'
 
 export default class MainProcess extends EventEmitter {
-  constructor() {
-    this.reddit
-    init()
+  constructor(sub) {
+    super()
+    this.subreddit = sub
+     
   }
   init() {
     this.reddit = new snoowrap({
@@ -15,7 +17,7 @@ export default class MainProcess extends EventEmitter {
       refreshToken: process.env.REDDIT_RFS_TOKEN,
     })
   }
-  retrieveSavedSub(sub) {
+  retrieveSubmissions(sub) {
     Promise.all(
       posts.map(async (post) => {
         // const submission = snoo.getSubmission('4j8p6d')

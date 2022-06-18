@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import Icon from './Icon'  
+// import Icon from './Icon'  
+import Back_ from  '../../images/back_arrow.svg'
 
  
 const Header = (props) => {
@@ -11,130 +12,30 @@ const Header = (props) => {
    }  
  
   function clickHandle(e) {
-      var node = e.currentTarget      
-       var x = $(node)
-      $(underlineRef.current).stop().animate({
-        'width': x.width(),
-        'left' : x.position().left
-     }, 200);
+ 
   }
   return (
     <Head>
-     
+        <BackButton/>
     </Head>
   )
 }
 
-const HeaderIcon  = ({item}) => {
-    return (
-     <IconContainer  >
-       <IconContent>
-         {item.disabled == false ? <Icon type={item.image} /> : <Icon type={item.image_disabled} />}
-
-         <IconText disabled={item.disabled}>{item.text}</IconText>
-       </IconContent>
-     </IconContainer>
-   )
+const BackButton = ({disabled =  false, img}) => {
+ return (
+   <IconContainer
+    right = {true}
+   >
+     <IconContent>
+       <Back_ />
+     </IconContent>
+   </IconContainer>
+ )
 }
-
-const AddTask = ( {disabled,  ...props }) => {
-  
-  const dispatch = useDispatch()
-  return (
-    <IconContainer
-      {...props}
-    
-      onClick={() => dispatch(toggleTaskModal())}
-    >
-      <IconContent>
-        {disabled == false ? <Icon type={'Add'} /> : ''}
-        {/* {item.disabled == false ? <Icon type={'Add'} /> : <Icon type={item.image_disabled} />} */}
-
-        <IconText disabled={disabled}>Add Url</IconText>
-      </IconContent>
-    </IconContainer>
-  )
-}
-const ResumeButton = ({disabled ,...props}) => {
+const StyledIcon = ({img}) => {
   
    return (
-    <IconContainer {...props}>
-       
-      <IconContent>
-        {disabled == false ? <Icon type={'Resume'} /> : <Icon type={'Resume_D'} />}       
-
-        <IconText disabled={disabled}>Resume</IconText>
-      </IconContent>
-    </IconContainer>
-  )
-}
-
-const StopButton = ({ disabled, ...props }) => {
-  return (
-    <IconContainer {...props}>
-      
-      <IconContent>
-        {disabled == false ? <Icon type={'Stop_D'} /> : <Icon type={'Stop'} />}
-
-        <IconText disabled={disabled}>Stop</IconText>
-      </IconContent>
-    </IconContainer>
-  )
-}
-const CancelButton = ({disabled ,...props}) => {
-    return (
-      <IconContainer {...props}>
-          
-        <IconContent>
-          {disabled == false ? <Icon type={'Cancel'} /> : <Icon type={'Cancel_D'} />}
-
-          <IconText disabled={disabled}>Stop</IconText>
-        </IconContent>
-      </IconContainer>
-    )
-}
-const DeleteButton = ({disabled,...props}) => {
-    return (
-      <IconContainer {...props}>
-         
-        <IconContent>
-          {disabled == false ? <Icon type={'Delete'} /> : <Icon type={'Delete_D'} />}
-
-          <IconText disabled={disabled}>Stop</IconText>
-        </IconContent>
-      </IconContainer>
-    )
-}
-
-const DeleteAll = ({disabled,...props}) => {
-     return (
-      <IconContainer {...props}>
-          
-        <IconContent>
-          {disabled == false ? <Icon type={'DeleteAll'} /> : <Icon type={'DeleteAll_D'} />}
-
-          <IconText disabled={disabled}>Stop</IconText>
-        </IconContent>
-      </IconContainer>
-    )
-}
-const Head = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 45px;
-  box-shadow: 0px 0px 9px 3px rgba(41, 41, 41, 0.25);
-  background-color: #fff;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 23%);
-  position: relative;
-  z-index: 10;
-`
-
-const StyledIcon = ({disabled,img,img_D,text,id}) => {
-  
-   return (
-     <IconContainer
-       disabled={disabled}
+     <IconContainer        
        onClick={() => {
          console.log('button clicked')
        }}
@@ -146,8 +47,18 @@ const StyledIcon = ({disabled,img,img_D,text,id}) => {
        </IconContent>
      </IconContainer>
    )
-}
-
+} 
+const Head = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 45px;
+  box-shadow: 0px 0px 9px 3px rgba(41, 41, 41, 0.25);
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 23%);
+  position: relative;
+  z-index: 10;
+`
 const IconContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -160,6 +71,7 @@ const IconContainer = styled.div`
   &:hover {
     background-color: #d6d6d6;
   }
+  margin-left: auto;
 
   user-select: none;
 `

@@ -4,8 +4,6 @@ import is from 'electron-is'
 import { readFile, unlink } from 'fs'
 import { extname, basename } from 'path'
 import { isEmpty } from 'lodash'
-import fs from 'fs'
-import csv from 'csv-parser'
 import Store from 'electron-store'
 import {
   APP_RUN_MODE, 
@@ -18,6 +16,7 @@ import EngineClient from './Controllers/EngineClient'
 import WindowManager from './Window/WindowManager'
 import MenuManager from './Window/MenuManager'
 import LinksManager from './Controllers/LinksManager'
+import SnooManager from './Controllers/SnooManager'
 import { getSessionPath } from './utils'
 import 'dotenv/config'
 
@@ -45,15 +44,16 @@ export default class MainProcess extends EventEmitter {
 
     this.handleIpcMessages()
 
-    this.handleIpcInvokes()   
+    this.handleIpcInvokes()
 
     this.emit('application:initialized')
 
     this.saveFiles = new Store({})
 
-    this.linksManager = this.initLinksManager()
+    // this.linksManager = new LinksManager()
+    this.initLinksManager()
 
-   
+    this.snooManager = new SnooManager()
   }
 
   initConfigManager() {
@@ -324,30 +324,7 @@ export default class MainProcess extends EventEmitter {
     }
   }
 
- initLinksManager() {
-  return new LinksManager()
- }
-
-  readCsv(path) {
-    let savedData = []
-    return new Promise((resolve, reject) => {
-      fs.createReadStream(path)
-        .pipe(csv())
-        .on('data', function (data) {
-          try {
-            savedData.push(data)
-          } catch (err) {
-            console.log(err)
-            reject(err)
-          }
-        })
-        .on('end', function () {
-          resolve(savedData)
-        })
-    })
-  }
-
-  async openPostsFile() {
+  async openLinksFile() {
     var open = await dialog.showOpenDialog({
       properties: ['openFile'],
       filters: [{ name: 'CSV', extensions: ['csv'] }],
@@ -355,18 +332,7 @@ export default class MainProcess extends EventEmitter {
 
     if (open.canceled === true || open.filePaths.length === 0) return
 
-    const fileString = await this.readCsv(open.filePaths[0])
-    const posts = fileString.map(({ permalink, id }) => {
-      const subreddit = permalink.split('/')[4]
-      const postId = id
-      return { permalink, subreddit, postId }
-    })
-    // const groupedPosts = groupBy(posts, 'subreddit')
-    
-    this.saveFiles.set('savedPosts', posts)
-     
-    
-    this.sendMessageToAll('main:recievedPosts', posts)
+    this.linksManager.readLinksFile(open.filePaths[0])
   }
 
   async retrieveSavedPosts() {
@@ -374,10 +340,22 @@ export default class MainProcess extends EventEmitter {
     const posts = this.saveFiles.get('savedPosts')
     this.sendMessageToAll('main:recievedPosts', posts)
   }
- 
+
+  initLinksManager() {
+    this.linksManager = new LinksManager()
+    
+
+     this.linksManager.on('recievedPosts', (posts) => {
+       logger.info('receied')
+       this.sendMessageToAll('main:recievedPosts', posts)
+     })
+
+  }
 
   handleCommands() {
-    this.on('application:openPostsFile', this.openPostsFile)
+    this.on('application:openLinksFile', () => {
+      this.openLinksFile()
+    })
 
     this.on('application:openSavedLinks', this.retrieveSavedPosts)
 
@@ -430,7 +408,9 @@ export default class MainProcess extends EventEmitter {
       }
     })
 
-    this.on('application:change-menu-states',(visibleStates, enabledStates, checkedStates) => {
+    this.on(
+      'application:change-menu-states',
+      (visibleStates, enabledStates, checkedStates) => {
         this.menuManager.updateMenuStates(
           visibleStates,
           enabledStates,
@@ -447,7 +427,6 @@ export default class MainProcess extends EventEmitter {
     this.on('application:clear-recent-tasks', () => {
       app.clearRecentDocuments()
     })
-   
   }
 
   openExternal(url) {
@@ -466,9 +445,8 @@ export default class MainProcess extends EventEmitter {
 
   handleEvents() {
     this.once('application:initialized', () => {
-      this.autoResumeTask()      
+      this.autoResumeTask()
       this.adjustMenu()
-
     })
 
     this.configManager.userConfig.onDidAnyChange(() =>
@@ -491,6 +469,7 @@ export default class MainProcess extends EventEmitter {
       }
       app.addRecentDocument(path)
     })
+   
   }
 
   handleIpcMessages() {
@@ -502,8 +481,7 @@ export default class MainProcess extends EventEmitter {
     ipcMain.on('event', (event, eventName, ...args) => {
       logger.log('App ipc receive event', eventName, ...args)
       this.emit(eventName, ...args)
-    })    
-    
+    })
   }
 
   handleIpcInvokes() {
@@ -516,10 +494,16 @@ export default class MainProcess extends EventEmitter {
       }
       return result
     })
-     ipcMain.handle('renderer:getSavedPosts', async () => {
-       return this.linksManager.getPosts()
-     })
+    ipcMain.handle('renderer:getSavedPosts', async () => {
+      return this.linksManager.getAllLinks()
+    })
+    ipcMain.handle('renderer:sortLinks', async (event,sortType) => {
+     
+      return this.linksManager.sortBy(sortType)
+    })
+    ipcMain.handle('renderer:getPostsBySub', async (event,sub) => {          
+      this.linksManager.getLinksBySub(sub)
+      return this.snooManager.retrieveSubmissions(sub)
+    })
   }
-
- 
 }

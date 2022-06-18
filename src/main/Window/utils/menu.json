@@ -10,7 +10,7 @@
         },
         {
           "id": "Open Links File",
-          "command": "application:openPostsFile"
+          "command": "application:openLinksFile"
         },
         {
           "id": "Get Save Links",

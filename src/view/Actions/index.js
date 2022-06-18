@@ -7,7 +7,7 @@ import { ipcRenderer } from 'electron'
 export const getSavedPostsFromMain = (message) => {     
  
       return async (dispatch, getState) => {   
-        const links = await ipcRenderer.invoke('renderer:getSavedPosts') 
+        const links = await ipcRenderer.invoke('renderer:getSavedPosts')        
         dispatch({ type: consts.SET_SAVED_POSTS, payload: links })
       } 
 }
@@ -18,11 +18,22 @@ export const setSavedPosts = (links) => {
 }
 
 
-export const sortCardsBy = (input)=> {
+export const sortCardsBy = (sortType)=> {
    
-  const sort =
-    input == 'alpha' ? consts.SORT_CARDS_ALPHA : consts.SORT_CARDS_RANK
-    return {type: sort}
+  // const sort =
+  //   input == 'alpha' ? consts.SORT_CARDS_ALPHA : consts.SORT_CARDS_RANK
+  //   return {type: sort}
+  return async (dispatch, getState) => {   
+    const sortedLinks = await ipcRenderer.invoke('renderer:sortLinks', sortType)
+    dispatch({ type: consts.SET_SAVED_POSTS, payload: sortedLinks })
+  }
+}
+
+export const getPostsBySub = (sub) => {  
+        return async (dispatch, getState) => {
+          const links = await ipcRenderer.invoke('renderer:getPostsBySub', sub)       
+          dispatch({ type: 'sd', payload: links })
+        } 
 }
  
 export const clearAdvancedInputs = () => {
@@ -66,14 +77,4 @@ export const changeDirectory = (val) => {
     return { type: consts.CHANGE_DEFAULT_DIRECTORY, payload: val }
 }
 
-export const getBulkInput = (data, history) => {
-  return (dispatch) => {
-      // let array = data.toString().split('\r\n')
-      // console.log(array);
-      dispatch ({ type: consts.GET_BULK_LINKS, payload: data })
-      history.push('/batch')
-
-  }
-
-    
-}
+ 
