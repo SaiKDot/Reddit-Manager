@@ -29,9 +29,10 @@ export const sortCardsBy = (sortType)=> {
   }
 }
 
-export const getPostsBySub = (sub) => {  
+export const getPostsBySub = (sub,startIndex = 0,endIndex = 50) => {  
         return async (dispatch, getState) => {
-          const links = await ipcRenderer.invoke('renderer:getPostsBySub', sub)       
+          const links = await ipcRenderer.invoke('renderer:getPostsBySub', sub,startIndex,endIndex)
+          console.log(JSON.parse(links))   
           dispatch({ type: 'sd', payload: links })
         } 
 }

@@ -1,12 +1,14 @@
 import { EventEmitter } from 'events'
 import snoowrap from 'Snoowrap'
 import * as Promise from 'bluebird'
+import logger from '../Helpers/Logger'
 
 export default class MainProcess extends EventEmitter {
   constructor(sub) {
     super()
     this.subreddit = sub
-     
+    this.reddit
+    this.init()
   }
   init() {
     this.reddit = new snoowrap({
@@ -17,21 +19,27 @@ export default class MainProcess extends EventEmitter {
       refreshToken: process.env.REDDIT_RFS_TOKEN,
     })
   }
-  retrieveSubmissions(posts) {
-    console.log({posts})
-    Promise.all(
-      posts.map(async (post) => {
-        // const submission = snoo.getSubmission('4j8p6d')
-        return await reddit.getSubmission('4j8p6d').fetch() //param is string
-
-        // submission.fetch()
-      })
-    )
-      .then((responses) =>
-        Promise.all(responses.map((res) => console.log(res)))
+  retrieve(posts) {
+   return Promise.all(
+      posts.map(
+        async (post) =>
+          await this.reddit
+            .getSubmission(post.postId)
+            .fetch()             
+            .then(({ url, domain, media_metadata, permalink, gallery_data, thumbnail, id,is_self,is_video }) => {
+              return { url, domain, media_metadata, permalink, gallery_data, thumbnail,id,is_self,is_video }
+            })
       )
-      .then((res) => {
-        console.log(res)
-      })
+    )
+      .then((responses) => Promise.all(responses.map((res) => res)))
+      .then(res => console.log(res))
+      .then((res) =>   {return {success: true, data:res}})
+      .catch((err) => console.log(err))
+      .catch((err) => { return { success: false, data: err }})
+  }
+  retrieveSubmissions(posts) {
+    const self = this
+      setInterval(function(){self.retrieve(posts)}, 500)
+      
   }
 }

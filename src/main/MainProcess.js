@@ -335,21 +335,17 @@ export default class MainProcess extends EventEmitter {
     this.linksManager.readLinksFile(open.filePaths[0])
   }
 
-  async retrieveSavedPosts() {
-    console.log(this.saveFiles)
+  async retrieveSavedPosts() { 
     const posts = this.saveFiles.get('savedPosts')
     this.sendMessageToAll('main:recievedPosts', posts)
   }
 
   initLinksManager() {
-    this.linksManager = new LinksManager()
-    
+    this.linksManager = new LinksManager()    
 
-     this.linksManager.on('recievedPosts', (posts) => {
-       logger.info('receied')
+     this.linksManager.on('recievedPosts', (posts) => {    
        this.sendMessageToAll('main:recievedPosts', posts)
      })
-
   }
 
   handleCommands() {
@@ -501,11 +497,15 @@ export default class MainProcess extends EventEmitter {
      
       return this.linksManager.sortBy(sortType)
     })
-    ipcMain.handle('renderer:getPostsBySub', async (event,sub) => {          
-      const postsBySub = this.linksManager.getLinksBySub(sub)
-      logger.info(postsBySub)
-        this.snooManager.retrieveSubmissions(posts)
-      return {}
+    ipcMain.handle('renderer:getPostsBySub', async (event,sub, startIndex=0, endIndex) => {          
+      const postsBySub = this.linksManager.getLinksBySub(sub, startIndex, endIndex)
+      console.log(postsBySub.length, 'LENG')
+      const postsSliced = endIndex <= postsBySub.length ? postsBySub.slice(startIndex, endIndex) : postsBySub       
+      // return JSON.stringify(postsSliced)
+      const posts = await this.snooManager.retrieveSubmissions(postsSliced)  
+      //  console.log(postsBySub)
+      // return {}
+      return JSON.stringify(posts)
     })
   }
 }

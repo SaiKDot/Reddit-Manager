@@ -35,8 +35,7 @@ export default class LinksManager extends EventEmitter {
     return mappedObj
   }
   
-  sortBy(param = 'default') {
-    console.log('param',param)
+  sortBy(param = 'default') {    
     const sortedPosts = this.saveFiles
       .get('savedLinks')
       .sort((a, b) =>
@@ -46,8 +45,7 @@ export default class LinksManager extends EventEmitter {
           ? Object.keys(a)[0].localeCompare(Object.keys(b)[0]) ||
             Object.values(b)[0].length - Object.values(a)[0].length
           : 0
-      )
-      console.log(sortedPosts.slice(0,10))
+      )      
       return sortedPosts
   }
 
@@ -70,17 +68,16 @@ export default class LinksManager extends EventEmitter {
     })
   }
 
-  getLinksBySub(sub) {
-    const posts = this.getAllLinks().splice(0,4)
-    
-    return posts.reduce((obj, first) => {       
-        Object.entries(first).forEach((val) => {
-          if(sub == val[0]) {  
-            obj = {[val[0]] : val[1]}
-          }        
-        })    
-        return obj    
-      }, {})
+  getLinksBySub(sub,startIndex, endIndex) {
+    const posts = this.getAllLinks()  
+    return posts.reduce((obj, first) => {
+      Object.entries(first).forEach((val) => {
+        if (sub == val[0]) {
+          obj.push(...val[1])
+        }
+      })
+      return obj
+    }, [])      
   }
 
   getAllLinks() {
